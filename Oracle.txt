@@ -1,0 +1,144 @@
+set wrap off
+
+
+CREATE TABLE course (
+    id int not null,
+	cname varchar(6) not null,
+	credits float not null,
+    PRIMARY KEY (id)
+);
+
+	INSERT INTO course VALUES   (1, 'CSC160', 3.5);
+	INSERT INTO course VALUES   (2, 'ART100', 1.5);
+	INSERT INTO course VALUES   (3, 'ART410', 3);
+	INSERT INTO course VALUES   (4, 'CSC161', 3.5);
+	INSERT INTO course VALUES  (5, 'FIN100', 3);
+	INSERT INTO course VALUES   (6, 'REL100', 3);
+	INSERT INTO course VALUES   (7, 'CSC460', 3);
+	INSERT INTO course VALUES  (8, 'CSC230', 3);
+	INSERT INTO course VALUES  (9, 'PHL110', 3);
+
+
+
+CREATE TABLE room (
+    id int not null,
+	rname varchar(6) not null,
+     PRIMARY KEY (id)
+);
+
+	INSERT INTO room VALUES   (1, 'C13');
+	INSERT INTO room VALUES   (2, 'C111');
+	INSERT INTO room VALUES  (3, 'C113');
+	INSERT INTO room VALUES   (4, 'G20');
+
+
+CREATE TABLE student(
+    id number not null,
+	snum int not null,
+	fname varchar(30) not null,
+	sname varchar(40) not null,
+	major char(3),
+     PRIMARY KEY (id)
+) ;
+
+	INSERT INTO student VALUES  (2, 2452, 'Joe', 'Jones', 'MTH');
+	INSERT INTO student VALUES   (3, 3234, 'John', 'Doe', 'HIS');
+	INSERT INTO student VALUES   (4, 4487, 'Sue', 'Collins', '');
+	INSERT INTO student VALUES   (5, 5734, 'Peter', 'Rogers', 'BIO');
+	INSERT INTO student VALUES  (6, 6112, 'Mary', 'Turner', 'HPE');
+	INSERT INTO student VALUES  (7, 7984, 'Mark', 'Miller', 'EDN');
+	INSERT INTO student VALUES   (8, 8342, 'Jill', 'Sampson', 'ECN');
+
+
+CREATE TABLE schedule (
+    id int,
+	cid int REFERENCES course(id),
+	sect int not null,
+	term char(4) not null,
+	timeslot int,
+	dayformat varchar(5),
+	room int REFERENCES room(id),
+     PRIMARY KEY (id)
+) ;
+
+
+	INSERT INTO schedule VALUES   (1, 1, 1, 'FA14', 1, 'MWF', 2);
+	INSERT INTO schedule VALUES   (2, 2, 1, 'FA14', 2, 'MWF', 3);
+	INSERT INTO schedule VALUES   (3, 3, 1, 'FA14', 3, 'MWF', 2);
+	INSERT INTO schedule VALUES   (4, 4, 1, 'FA14', 4, 'MWF', 3);
+	INSERT INTO schedule VALUES   (5, 5, 1, 'FA14', 1, 'TR', 3);
+	INSERT INTO schedule VALUES   (6, 6, 1, 'FA14', 1, 'TR', 2);
+	INSERT INTO schedule VALUES   (7, 7, 1, 'FA14', 2, 'TR', 2);
+	INSERT INTO schedule VALUES   (8, 8, 1, 'FA14', 2, 'TR', 1);
+	INSERT INTO schedule VALUES   (9, 1, 2, 'FA14', 1, 'MWF', 3);
+	INSERT INTO schedule VALUES   (10, 2, 2, 'FA14', 2, 'MWF', 2);
+	INSERT INTO schedule VALUES  (11, 3, 2, 'FA14', 3, 'MWF', 3);
+	INSERT INTO schedule VALUES   (12, 4, 2, 'FA14', 4, 'MWF', 2);
+	INSERT INTO schedule VALUES   (13, 5, 2, 'FA14', 3, 'TR', 3);
+	INSERT INTO schedule VALUES   (14, 6, 2, 'FA14', 3, 'TR', 2);
+	INSERT INTO schedule VALUES  (15, 7, 2, 'FA14', 2, 'TR', 3);
+
+CREATE TABLE enroll (
+	id int not null,
+    sid number REFERENCES student(id) not null,
+	cid int REFERENCES course(id) not null,
+	csect int REFERENCES schedule(id) not null,
+	grade CHAR(2),
+	ngrade int,
+    PRIMARY KEY (id)
+);
+
+	INSERT INTO enroll VALUES  (1, 1, 1, 1, '', NULL);
+	INSERT INTO enroll VALUES  (2, 2, 2, 1, 'A', 95); 
+	INSERT INTO enroll VALUES  (3, 4, 1, 2, 'B+', 87);
+	INSERT INTO enroll VALUES  (4, 7, 3, 2, 'B', 85); 
+	INSERT INTO enroll VALUES  (5, 1, 4, 2, 'B', 85);
+	INSERT INTO enroll VALUES   (6, 7, 7, 3, 'A-', 93);
+	INSERT INTO enroll VALUES   (7, 4, 8, 3, 'A-', 93);
+	INSERT INTO enroll VALUES   (8, 7, 8, 4, 'B+', 87);
+	INSERT INTO enroll VALUES   (9, 1, 8, 5, 'C', 75);
+	INSERT INTO enroll VALUES   (10, 2, 3, 5, 'A', 95); 
+	INSERT INTO enroll VALUES   (11, 2, 4, 6, 'B', 85);
+	INSERT INTO enroll VALUES   (12, 4, 6, 6, 'A', 95);
+	INSERT INTO enroll VALUES   (13, 5, 2, 3, 'A', 95); 
+	INSERT INTO enroll VALUES   (14, 5, 4, 3, 'B+', 87);
+	INSERT INTO enroll VALUES   (15, 4, 7, 4, 'C+', 77);
+
+
+CREATE TABLE program (
+     	id int not null,
+	pname char(3) not null,
+     PRIMARY KEY (id)
+);
+
+
+	INSERT INTO program VALUES  (1, 'CSC');
+	INSERT INTO program VALUES  (2, 'ART');
+	INSERT INTO program VALUES  (3, 'FIN');
+	INSERT INTO program VALUES  (4, 'REL');
+	INSERT INTO program VALUES  (5, 'PHL');
+	INSERT INTO program VALUES  (6, 'MTH');
+	INSERT INTO program VALUES   (7, 'ACC');
+
+
+
+CREATE TABLE pgmcourses (
+     	pid int not null,
+     	cid int not null,
+	type char(1),
+     PRIMARY KEY (pid, cid)
+);
+
+	 INSERT INTO pgmcourses VALUES  (1, 1, 'C');
+	 INSERT INTO pgmcourses VALUES  (1, 4, 'C');
+	 INSERT INTO pgmcourses VALUES  (1, 7, 'E');
+	 INSERT INTO pgmcourses VALUES  (2, 2, 'C');
+	 INSERT INTO pgmcourses VALUES  (2, 3, 'E');
+	 INSERT INTO pgmcourses VALUES  (3, 5, '');
+	 INSERT INTO pgmcourses VALUES  (4, 6, 'C');
+	 INSERT INTO pgmcourses VALUES (5, 9, 'C');
+	 INSERT INTO pgmcourses VALUES (1, 8, 'E');
+	 INSERT INTO pgmcourses VALUES  (6, 8, 'E');
+	 
+	 
+	 
